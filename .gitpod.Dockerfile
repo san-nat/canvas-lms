@@ -21,8 +21,8 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 RUN sudo apt-get update && sudo apt-get -y install yarn=1.10.1-1
 
-RUN sudo -u postgres createuser $USER
-RUN sudo -u postgres psql -c "alter user $USER with superuser" postgres
+#RUN sudo -u postgres createuser $USER
+#RUN sudo -u postgres psql -c "alter user $USER with superuser" postgres
 
 # Install custom tools, runtimes, etc.
 # For example "bastet", a command-line tetris clone:
