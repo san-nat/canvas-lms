@@ -2,7 +2,7 @@ FROM gitpod/workspace-postgres
 
 
 RUN sudo apt-get update 
-RUN sudo apt install zlib1g-dev libxml2-dev libsqlite3-dev libpq-dev libxmlsec1-dev curl build-essential
+RUN sudo apt -y install zlib1g-dev libxml2-dev libsqlite3-dev libpq-dev libxmlsec1-dev curl build-essential
 
 # Install Ruby
 ENV RUBY_VERSION=2.6
@@ -19,7 +19,7 @@ ENV PATH=/home/gitpod/.nvm/versions/node/v${NODE_VERSION}/bin:$PATH
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-RUN sudo apt-get update && sudo apt-get install yarn=1.10.1-1
+RUN sudo apt-get update && sudo apt-get -y install yarn=1.10.1-1
 
 RUN sudo -u postgres createuser $USER
 RUN sudo -u postgres psql -c "alter user $USER with superuser" postgres
