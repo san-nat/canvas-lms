@@ -1,0 +1,17 @@
+bundle install
+yarn install --pure-lockfile
+for config in amazon_s3 delayed_jobs domain file_store outgoing_mail security external_migration; do cp -v config/$config.yml.example config/$config.yml; done 
+cp config/dynamic_settings.yml.example config/dynamic_settings.yml
+bundle exec rails canvas:compile_assets
+cp config/database.yml.example config/database.yml
+createdb canvas_development
+export CANVAS_LMS_ADMIN_EMAIL=snatarajan@instructure.com && export CANVAS_LMS_ADMIN_PASSWORD=password && export CANVAS_LMS_STATS_COLLECTION=opt_out
+export CANVAS_LMS_ACCOUNT_NAME=inst
+bundle exec rails db:initial_setup
+psql -c 'CREATE USER canvas' -d postgres
+psql -c 'ALTER USER canvas CREATEDB' -d postgres
+createdb -U canvas canvas_test
+psql -c 'GRANT ALL PRIVILEGES ON DATABASE canvas_test TO canvas' -d canvas_test
+psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO canvas' -d canvas_test
+psql -c 'GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO canvas' -d canvas_test
+RAILS_ENV=test bundle exec rails db:test:reset
